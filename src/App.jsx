@@ -1,21 +1,14 @@
 import { useState } from "react";
 import {
-  getAuth,
   signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  TwitterAuthProvider,
   signOut,
 } from "firebase/auth";
+
+import { auth, gooogleProvider, facebookProvider, twitterProvider } from "./utils/firebase";
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-
-  const auth = getAuth();
-  const gooogleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
-  const twitterProvider = new TwitterAuthProvider();
 
   const handleAuthProvider = (provider) => {
     signInWithPopup(auth, provider)
