@@ -3,8 +3,8 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-
-import { auth, gooogleProvider, facebookProvider, twitterProvider } from "./utils/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, gooogleProvider, facebookProvider, twitterProvider, db } from "./utils/firebase";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -12,9 +12,26 @@ export default function App() {
 
   const handleAuthProvider = (provider) => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         console.log(result);
         setUser(result.user);
+
+        const docRef = doc(db, "usernames", result.user.uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docRef)
+        console.log(docSnap)
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+        } else {
+          await setDoc(doc(db, "usernames", result.user.uid), {
+            name: result.user.displayName,
+            mail: result.user.email,
+            picture: result.user.photoURL
+
+          })
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+        }
       })
       .catch((error) => {
         setError(error.message);
@@ -42,7 +59,7 @@ export default function App() {
       </button>
       <button onClick={() => handleAuthProvider(twitterProvider)}>
         Twitter
-      </button> 
+      </button>
       {user && (
         <>
           <button onClick={logout}>Logout</button>
