@@ -13,25 +13,24 @@ export default function App() {
   const handleAuthProvider = (provider) => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        console.log(result);
-        setUser(result.user);
-
         const docRef = doc(db, "usernames", result.user.uid);
         const docSnap = await getDoc(docRef);
-        console.log(docRef)
-        console.log(docSnap)
-        if (docSnap.exists()) {
-          console.log("Document data:", docSnap.data());
-        } else {
-          await setDoc(doc(db, "usernames", result.user.uid), {
-            name: result.user.displayName,
-            mail: result.user.email,
-            picture: result.user.photoURL
 
+        if (docSnap.exists()) {//connexion
+          setUser(docSnap.data())
+
+          console.log("Document data:", docSnap.data());
+        } else {//inscription
+          await setDoc(doc(db, "usernames", result.user.uid), {
+            displayName: result.user.displayName,
+            email: result.user.email,
+            photoURL: result.user.photoURL
           })
-          // docSnap.data() will be undefined in this case
-          console.log("No such document!");
+          const docRef = doc(db, "usernames", result.user.uid);
+          const docSnap = await getDoc(docRef);
+          setUser(docSnap.data())
         }
+
       })
       .catch((error) => {
         setError(error.message);
