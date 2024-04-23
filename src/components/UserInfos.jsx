@@ -15,7 +15,7 @@ export default function UserInfos({ logout }) {
         </p>
       )}
       {user.email && <p>{user.email}</p>}
-      <img src={user.photoURL} alt={user.displayName} />
+      <img src={user.photoURL} alt={user.displayName} className="mt-4" />
     </>
   );
 }
