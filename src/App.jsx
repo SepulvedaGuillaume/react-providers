@@ -111,7 +111,7 @@ export default function App() {
         </div>
       )}
       {registered && user && <UserInfos logout={logout} />}
-      {error && <p>{error}</p>}
+      {error && <p className="message is-danger mt-4">{error}</p>}
     </div>
   );
 }
