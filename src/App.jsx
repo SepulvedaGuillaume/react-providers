@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
@@ -10,9 +10,10 @@ import {
 } from "./utils/firebase";
 import UserInfos from "./components/UserInfos";
 import ProviderItem from "./components/ProviderItem";
+import { UserContext } from "./contexts/UserContext";
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [registered, setRegistered] = useState(false);
   const [providersList, setProvidersList] = useState([
@@ -109,7 +110,7 @@ export default function App() {
           ))}
         </div>
       )}
-      {registered && user && <UserInfos user={user} logout={logout} />}
+      {registered && user && <UserInfos logout={logout} />}
       {error && <p>{error}</p>}
     </div>
   );
