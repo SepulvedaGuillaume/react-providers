@@ -44,7 +44,6 @@ export default function FormVideo() {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setProgressBar(progress);
-          console.log("Upload is " + progress + "% done");
 
           switch (snapshot.state) {
             case "paused":
@@ -102,7 +101,6 @@ export default function FormVideo() {
       setFile(selectedFile);
     });
     video.src = URL?.createObjectURL(selectedFile);
-    console.log(video.src);
   };
 
   const handleTitleChange = (e) => {

@@ -8,37 +8,30 @@ export default function VideosItems() {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      if (user && user.videosId && user.videosId.length > 0) {
-        const videosRef = collection(db, "videos");
-        const q = query(videosRef, where("__name__", "in", user.videosId));
-        const videosData = [];
-        onSnapshot(q, (snapshot) => {
-          snapshot.forEach(
-            (doc) => {
-              videosData.push({ id: doc.id, ...doc.data() });
-            },
-            { includeMetadataChanges: true }
-          );
-          setVideos(videosData);
-        });
-      }
-    };
+    const unsubscribe = onSnapshot(query(collection(db, "videos"), where("__name__", "in", user.videosId)), (snapshot) => {
+      const videosData = [];
+      snapshot.forEach((doc) => {
+        videosData.push({ id: doc.id, ...doc.data() });
+      });
+      setVideos(videosData); // Update state with the entire data array
+    }, (error) => {
+      console.error(error);
+    });
 
-    fetchVideos();
-  }, [user]);
+    return unsubscribe; // Return the unsubscribe function for cleanup
+  }, [user, videos]);
 
   return (
     <div className="container">
       {videos.length > 0 && (
         <>
-          <h2 className="title is-2">Mes vidéos</h2>
+          <h3 className="title is-3 pb-4">Mes vidéos</h3>
           <div className="columns is-multiline">
             {videos.map((video) => (
               <div key={video.id} className="column is-one-third">
                 <div className="card">
                   <div className="card-content">
-                    <p className="title is-4">{video.name}</p>
+                    <p className="title is-4 has-text-white">{video.title}</p>
                     <div className="content">
                       <video
                         src={video.url}
