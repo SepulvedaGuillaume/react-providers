@@ -1,26 +1,17 @@
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import Button from "./Button";
 
 export default function ProviderItem({
   provider,
-  handleSignUpProvider,
-  handleConnexionProvider,
+  onClickProvider,
 }) {
   return (
     <div className="mr-4">
-      {provider.register ? (
-        <SignUp
-          label={provider.label}
-          onSignUpClick={handleSignUpProvider}
-          provider={provider.provider}
-        />
-      ) : (
-        <SignIn
-          label={provider.label}
-          onSignInClick={handleConnexionProvider}
-          provider={provider.provider}
-        />
-      )}
+      <Button
+        message={provider.register ? "S'inscrire avec" : "Se connecter avec"}
+        label={provider.label}
+        onClickProvider={onClickProvider}
+        provider={provider.provider}
+      />
     </div>
   );
 }

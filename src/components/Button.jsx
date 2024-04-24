@@ -5,9 +5,9 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 
-export default function SignIn({ label, onSignInClick, provider }) {
+export default function Boutton({ message, label, onClickProvider, provider }) {
   return (
-    <button onClick={() => onSignInClick(provider)} className="button">
+    <button onClick={() => onClickProvider(provider)} className="button">
       <FontAwesomeIcon
       className="mr-2"
         icon={
@@ -20,7 +20,7 @@ export default function SignIn({ label, onSignInClick, provider }) {
             : null
         }
       />
-      Se connecter avec {label}
+      {message} {label}
     </button>
   );
 }

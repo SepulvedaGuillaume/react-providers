@@ -6,7 +6,7 @@ export default function UserInfos({ logout }) {
 
   return (
     <>
-      <button onClick={logout} className="button">
+      <button onClick={logout} className="button is-danger">
         Logout
       </button>
       {user.displayName && (
